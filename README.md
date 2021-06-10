@@ -155,6 +155,7 @@ controller.removeFill(fill);
 
 ## Show User location
 **onUserLocationUpdated is available from v0.2.0**
+
 To show user current location on the map
 ~~~dart
 MapmyIndiaMap(  
