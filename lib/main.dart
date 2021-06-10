@@ -10,11 +10,22 @@ import 'package:flutter_mapmyindia_gl_app/samples/add_marker.dart';
 import 'package:flutter_mapmyindia_gl_app/samples/add_polyline_wdget.dart';
 import 'package:flutter_mapmyindia_gl_app/samples/camera_feature.dart';
 import 'package:flutter_mapmyindia_gl_app/samples/current_location_widget.dart';
+import 'package:flutter_mapmyindia_gl_app/samples/direction_ui_widget.dart';
+import 'package:flutter_mapmyindia_gl_app/samples/direction_widget.dart';
+import 'package:flutter_mapmyindia_gl_app/samples/geocode_widget.dart';
 import 'package:flutter_mapmyindia_gl_app/samples/location_camera_option.dart';
 import 'package:flutter_mapmyindia_gl_app/samples/map_click_event.dart';
 import 'package:flutter_mapmyindia_gl_app/samples/map_long_click.dart';
-import 'package:flutter_mapmyindia_gl_app/samples/marker_dragging_widget.dart';
+import 'package:flutter_mapmyindia_gl_app/samples/nearby_ui_widget.dart';
+import 'package:flutter_mapmyindia_gl_app/samples/nearby_widget.dart';
+import 'package:flutter_mapmyindia_gl_app/samples/place_detail_widget.dart';
+import 'package:flutter_mapmyindia_gl_app/samples/place_picker_widget.dart';
+import 'package:flutter_mapmyindia_gl_app/samples/place_search_widget.dart';
+import 'package:flutter_mapmyindia_gl_app/samples/poi_along_route_widget.dart';
+import 'package:flutter_mapmyindia_gl_app/samples/reverse_geocode_widget.dart';
 import 'package:flutter_mapmyindia_gl_app/utils/color.dart';
+import 'package:flutter_mapmyindia_gl_app/samples/add_polygon_widget.dart';
+import 'package:flutter_mapmyindia_gl_app/samples/autosuggest_widget.dart';
 import 'package:flutter_mapmyindia_gl_app/utils/feature_type.dart';
 import 'package:location/location.dart';
 import 'package:mapmyindia_gl/mapmyindia_gl.dart';
@@ -42,9 +53,28 @@ final List<FeatureList> locationFeatures = <FeatureList>[
   FeatureList('Current Location', 'Location camera options for render and tracking modes', '/CurrentLocation')
 ];
 
-final List<FeatureList> polylineFeatures = <FeatureList>[
-  FeatureList('Draw Polyline', 'Draw a polyline with given list of latitude and longitude', '/AddPolyline')
+final List<FeatureList> customWidgetFeature = <FeatureList>[
+  FeatureList("Place Autocomplete Widget", "Location search functionality and UI to search a place", '/PlaecSearchUI'),
+  FeatureList("Place Picker", "Place Picker to search and choose a specific location", '/PlacePickerUI'),
+  FeatureList('Direction Widget', "MapmyIndia Direction Widget to show Route on map", '/DirectionUI'),
+  FeatureList('Nearby Widget', "MapmyIndia Nearby Widget to search nearby result on map", '/NearbyUI')
 ];
+
+final List<FeatureList> polylineFeatures = <FeatureList>[
+  FeatureList('Draw Polyline', 'Draw a polyline with given list of latitude and longitude', '/AddPolyline'),
+  FeatureList('Draw Polygon', 'Draw a polygon with given list of latitude and longitude', '/AddPolygon')
+];
+
+final List<FeatureList> restApiFeatures = <FeatureList>[
+  FeatureList('Autosuggest', 'Auto suggest places on the map', '/AutoSuggest'),
+  FeatureList('Geocode', 'Geocode rest API call', '/Geocode'),
+  FeatureList('Reverse Geocode', 'Reverse Geocode rest API call', '/ReverseGeocode'),
+  FeatureList('Nearby', 'Show nearby results on the map', '/Nearby'),
+  FeatureList('Direction', 'Get directions between two points and show on the map', '/Direction'),
+  FeatureList('POI Along Route', 'User will be able to get the details of POIs of a particular category along his set route', '/POIAlongRoute'),
+  FeatureList('Place Detail', 'To get the place details from eLoc', '/PlaceDetail'),
+];
+
 
 class MapsDemo extends StatefulWidget {
   @override
@@ -62,29 +92,37 @@ void main() {
       '/CameraFeature': (BuildContext context) => CameraFeature(),
       '/LocationCameraOptions': (BuildContext context) => LocationCameraOption(),
       '/AddMarker': (BuildContext context) => AddMarkerWidget(),
-      '/MarkerDragging': (BuildContext context) => MarkerDraggingWidget(),
       '/CurrentLocation': (BuildContext context) => CurrentLocationWidget(),
-      '/AddPolyline': (BuildContext context) => AddPolylineWidget()
+      '/AddPolyline': (BuildContext context) => AddPolylineWidget(),
+      '/AddPolygon': (BuildContext context) => AddPolygonWidget(),
+      '/AutoSuggest': (BuildContext context) => AutoSuggestWidget(),
+      '/Geocode': (BuildContext context) => GeocodeWidget(),
+      '/ReverseGeocode': (BuildContext context) => ReverseGeocodeWidget(),
+      '/Nearby': (BuildContext context) => NearbyWidget(),
+      '/Direction': (BuildContext context) => DirectionWidget(),
+      '/POIAlongRoute': (BuildContext context) => POIAlongRouteWidget(),
+      '/DirectionUI': (BuildContext context) => DirectionUIWidget(),
+      '/NearbyUI': (BuildContext context) => NearbyUIWidget(),
+      '/PlaecSearchUI': (BuildContext context) => PlaceSearchWidget(),
+      '/PlacePickerUI': (BuildContext context) => PlacePickerWidget(),
+      '/PlaceDetail': (BuildContext context) => PlaceDetailWidget(),
     },
   ));
 }
 
 class MapDemoState extends State {
-  //FIXME: Add your Mapbox access token here
   static const String MAP_SDK_KEY = "";
   static const String REST_API_KEY = "";
-  static const String ATLAS_CLIENT_ID =
-      ";
-  static const String ATLAS_CLIENT_SECRET =
-      "";
+  static const String ATLAS_CLIENT_ID = "";
+  static const String ATLAS_CLIENT_SECRET = "";
 
-  FeatureType selectedFeatureType;
+  FeatureType? selectedFeatureType;
 
   void setPermission() async {
     if (!kIsWeb) {
       final location = Location();
       final hasPermissions = await location.hasPermission();
-      if (hasPermissions != PermissionStatus.GRANTED) {
+      if (hasPermissions != PermissionStatus.granted) {
         await location.requestPermission();
       }
     }
@@ -187,6 +225,24 @@ class MapDemoState extends State {
             },
           ),
           ListTile(
+            title: Text('Rest Api Call'),
+            onTap: () => {
+              setState(() {
+                selectedFeatureType = FeatureType.REST_API_CALLS;
+              }),
+              Navigator.pop(context)
+            },
+          ),
+          ListTile(
+            title: Text('Custom Widgets'),
+            onTap: () => {
+              setState(() {
+                selectedFeatureType = FeatureType.CUSTOM_WIDGET_FEATURE;
+              }),
+              Navigator.pop(context)
+            },
+          ),
+          ListTile(
             title: Text('Polylines'),
             onTap: () => {
               setState(() {
@@ -216,6 +272,16 @@ class MapDemoState extends State {
           itemCount: locationFeatures.length,
           itemBuilder: (_, int index) =>
               itemWidget(locationFeatures[index], context));
+    } else if (selectedFeatureType == FeatureType.REST_API_CALLS) {
+      return ListView.builder(
+          itemCount: restApiFeatures.length,
+          itemBuilder: (_, int index) =>
+              itemWidget(restApiFeatures[index], context));
+    } else if (selectedFeatureType == FeatureType.CUSTOM_WIDGET_FEATURE) {
+      return ListView.builder(
+          itemCount: customWidgetFeature.length,
+          itemBuilder: (_, int index) =>
+              itemWidget(customWidgetFeature[index], context));
     } else if (selectedFeatureType == FeatureType.POLYLINE_FEATURE) {
       return ListView.builder(
           itemCount: polylineFeatures.length,
@@ -235,6 +301,10 @@ class MapDemoState extends State {
       return Text('Marker');
     } else if (selectedFeatureType == FeatureType.LOCATION_FEATURE) {
       return Text('Location');
+    } else if (selectedFeatureType == FeatureType.REST_API_CALLS) {
+      return Text('Rest Api Call');
+    } else if (selectedFeatureType == FeatureType.CUSTOM_WIDGET_FEATURE) {
+      return Text('Custom Widgets');
     } else if (selectedFeatureType == FeatureType.POLYLINE_FEATURE) {
       return Text('Polyline');
     } else {

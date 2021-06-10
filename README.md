@@ -1,5 +1,3 @@
-
-
 ![MapmyIndia APIs](https://www.mapmyindia.com/api/img/mapmyindia-api.png)
   
 # Flutter MapmyIndia GL   
@@ -9,15 +7,13 @@
 To work with MapmyIndia Map in flutter add this to your package's pubspec.yaml file:
 ~~~yaml
 dependencies:
-  mapmyindia_gl: ^0.1.6
+  mapmyindia_gl: ^0.2.0
 ~~~
 
 Now in your dart code you need to import this package:
 ~~~dart
 import 'package:mapmyindia_gl/mapmyindia_gl.dart';
-~~~
-    
-    
+~~~ 
    
 ## Adding MapmyIndia Keys    
      
@@ -34,15 +30,15 @@ MapmyIndiaAccountManager.setAtlasClientSecret(ATLAS_CLIENT_SECRET);
 Add MapmyIndiaMap widget
 ~~~dart
 MapmyIndiaMap(  
-	  initialCameraPosition: CameraPosition(  
-		  target: LatLng(25.321684, 82.987289),  
-		  zoom: 14.0,  
-		),  
-	  onMapCreated: (map) =>  
-	  {  
-		  mapController = map,
-	  },
-  ),
+	initialCameraPosition: CameraPosition(  
+	  target: LatLng(25.321684, 82.987289),  
+	  zoom: 14.0,  
+	),  
+	onMapCreated: (map) =>  
+	{  
+	  mapController = map,
+	},
+),
 ~~~
 
 ## Map Interactions
@@ -81,9 +77,40 @@ mapController.easeCamera(CameraUpdate.newLatLngZoom(LatLng(28.704268, 77.103045)
 mapController.animateCamera(CameraUpdate.newLatLngZoom(LatLng(28.698791, 77.121243), 14));
 ~~~
 
+## Map Events
+### Map Click/Long click
+If you want to respond to a user tapping on a point on the map, you can use a onMapClick callback.
+
+It sets a callback that's invoked when the user clicks on the map:
+~~~dart
+MapmyIndiaMap(  
+  initialCameraPosition: _kInitialPosition,  
+  onMapClick: (point, latlng) =>{  
+    print(latlng.toString())
+  },  
+)
+~~~
+
+##### Sets a callback that's invoked when the user long clicks on the map view.
+~~~dart
+MapmyIndiaMap(  
+  initialCameraPosition: _kInitialPosition,  
+  onMapLongClick: (point, latlng) =>{  
+    print(latlng.toString())
+  },  
+)
+~~~
+
+
 ## Map Overlays
 ### Add a Marker
 Add marker on the map by following these steps:
+~~~dart
+Symbol symbol = await controller.addSymbol(SymbolOptions(geometry: LatLng(25.321684, 82.987289)));
+~~~
+
+### Customize a marker
+
 ~~~dart
 /// Adds an asset image to the currently displayed style  
 Future<void> addImageFromAsset(String name, String assetName) async {  
@@ -102,7 +129,7 @@ To remove a marker from map
 controller.removeSymbol(symbol);
 ~~~
 ### Add a Polyline
-To add polyline on Map
+Draw a polyline on Map
 ~~~dart
 Line line = await controller.addLine(LineOptions(geometry: latlng, lineColor: "#3bb2d0", lineWidth: 4));
 ~~~
@@ -112,6 +139,34 @@ To remove polyline from Map
 ~~~dart
 controller.removeLine(line);
 ~~~
+
+### Add a Polygon
+**This feature is available from version v0.2.0**
+
+Draw a polygon on the map:
+~~~dart
+Fill fill = await controller.addFill(FillOptions(geometry: latlng, fillColor: "#3bb2d0")); 
+~~~
+
+### Remove a Polygon
+~~~dart
+controller.removeFill(fill);
+~~~
+
+## Show User location
+**onUserLocationUpdated is available from v0.2.0**
+To show user current location on the map
+~~~dart
+MapmyIndiaMap(  
+  initialCameraPosition: _kInitialPosition,  
+  myLocationEnabled: true,  
+  myLocationTrackingMode: MyLocationTrackingMode.NONE_COMPASS,  
+  onUserLocationUpdated: (location) => {  
+      print("Position: ${location.position.toString()}, Speed: ${location.speed}, Altitude: ${location.altitude}")  
+  },  
+)
+~~~
+
 
 ![Email](https://www.google.com/a/cpanel/mapmyindia.co.in/images/logo.gif?service=google_gsuite) 
 

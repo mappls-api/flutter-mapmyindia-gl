@@ -1,22 +1,19 @@
-import 'dart:typed_data';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_mapmyindia_gl_app/utils/color.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:mapmyindia_gl/mapmyindia_gl.dart';
 
-
-class AddPolylineWidget extends StatefulWidget {
+class AddPolygonWidget extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
-    return AddPolylineState();
+    return AddPolygonState();
   }
 
 }
 
-class AddPolylineState extends State {
+class AddPolygonState extends State {
   static final CameraPosition _kInitialPosition = const CameraPosition(
     target: LatLng(25.321684, 82.987289),
     zoom: 10.0,
@@ -32,7 +29,7 @@ class AddPolylineState extends State {
         backgroundColor: MyColor.colorPrimary,
         brightness: Brightness.dark,
         title: Text(
-          'Add Polyline',
+          'Add Polygon',
           style: TextStyle(color: Colors.white),
         ),
         elevation: 0.2,
@@ -44,26 +41,24 @@ class AddPolylineState extends State {
           controller = map,
         },
         onStyleLoadedCallback: () => {
-          addMarker()
+          addPolygon()
         },
       ),
     );
   }
 
 
-  void addMarker() async {
- //   await addImageFromAsset("icon", "assets/symbols/custom-icon.png");
-    List<LatLng> latlng = <LatLng>[
-      LatLng(28.705436, 77.100462),
-      LatLng(28.705191, 77.100784),
-      LatLng(28.704646, 77.101514),
-      LatLng(28.704194, 77.101171),
-      LatLng(28.704083, 77.101066),
-      LatLng(28.703900, 77.101318)
-    ];
-    LatLngBounds latLngBounds = boundsFromLatLngList(latlng);
+  void addPolygon() async {
+    List<List<LatLng>> latlng = [<LatLng>[
+      LatLng(28.703900, 77.101318),
+      LatLng(28.703331, 77.102155),
+      LatLng(28.703905, 77.102761),
+      LatLng(28.704248, 77.102370),
+      LatLng(28.703900, 77.101318),
+    ]];
+    LatLngBounds latLngBounds = boundsFromLatLngList(latlng.first);
     controller.animateCamera(CameraUpdate.newLatLngBounds(latLngBounds));
-    controller.addLine(LineOptions(geometry: latlng, lineColor: "#3bb2d0", lineWidth: 4));
+    controller.addFill(FillOptions(geometry: latlng, fillColor: "#3bb2d0"));
 
   }
 

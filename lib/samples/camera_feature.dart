@@ -12,8 +12,8 @@ class CameraFeature extends StatefulWidget {
 }
 
 class CameraFeatureState extends State {
-  MapboxMapController mapController;
-  bool isMapLoded;
+  late MapmyIndiaMapController mapController;
+  bool isMapLoded = false;
 
   static final CameraPosition _kInitialPosition = const CameraPosition(
     target: LatLng(25.321684, 82.987289),
@@ -23,13 +23,12 @@ class CameraFeatureState extends State {
   @override
   void initState() {
     super.initState();
-    mapController = null;
     setState(() {
       isMapLoded = false;
     });
   }
 
-  void _onMapCreated(MapboxMapController controller) {
+  void _onMapCreated(MapmyIndiaMapController controller) {
     mapController = controller;
     setState(() {
       isMapLoded = true;

@@ -18,7 +18,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.7.0 <3.0.0"
+  sdk: ">=2.12.0 <3.0.0"
 
 dependencies:
   flutter:
@@ -27,11 +27,18 @@ dependencies:
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
-  cupertino_icons: ^0.1.3
-  mapmyindia_gl: ^0.1.7
-  fluttertoast: ^3.1.3
-  location: ^2.5.3
-  http:
+  mapmyindia_gl: ^0.2.0
+  cupertino_icons: ^1.0.0
+  fluttertoast: ^8.0.6
+  location: 4.0.0
+  mapmyindia_direction_plugin: ^0.1.0
+  flutter_colorpicker: ^0.4.0
+  supercharged: ^2.0.0
+  mapmyindia_nearby_plugin: ^0.1.0
+  mapmyindia_place_widget: ^0.1.0
+  path_provider: ^2.0.0
+  http: ^0.13.0
+  collection: ^1.0.0
 
 dev_dependencies:
   flutter_test:

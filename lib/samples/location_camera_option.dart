@@ -12,11 +12,11 @@ class LocationCameraOption extends StatefulWidget {
 }
 
 class LocationCameraOptionState extends State {
-  MapboxMapController mapController;
-  bool isMapLoded;
-  MyLocationTrackingMode _myLocationTrackingMode;
-  MyLocationRenderMode _myLocationRenderMode;
-  String _slectedRenderModeText;
+  late MapmyIndiaMapController mapController;
+  bool isMapLoded = false;
+  late MyLocationTrackingMode _myLocationTrackingMode;
+  late MyLocationRenderMode _myLocationRenderMode;
+  late String _slectedRenderModeText;
   List<MyLocationRenderMode> renderModeList = [
     MyLocationRenderMode.NORMAL,
     MyLocationRenderMode.COMPASS,
@@ -27,7 +27,7 @@ class LocationCameraOptionState extends State {
     "Compass",
     "GPS",
   ];
-  String _selectedTrackingModeText;
+  late String _selectedTrackingModeText;
   List<MyLocationTrackingMode> trackingModeList = [
     MyLocationTrackingMode.None,
     MyLocationTrackingMode.NONE_COMPASS,
@@ -55,7 +55,6 @@ class LocationCameraOptionState extends State {
   @override
   void initState() {
     super.initState();
-    mapController = null;
     setState(() {
       isMapLoded = false;
       _myLocationRenderMode = renderModeList[0];
@@ -65,7 +64,7 @@ class LocationCameraOptionState extends State {
     });
   }
 
-  void _onMapCreated(MapboxMapController controller) {
+  void _onMapCreated(MapmyIndiaMapController controller) {
     mapController = controller;
     setState(() {
       isMapLoded = true;
