@@ -1,3 +1,4 @@
+
 ![MapmyIndia APIs](https://www.mapmyindia.com/api/img/mapmyindia-api.png)
   
 # Flutter MapmyIndia GL   
@@ -7,7 +8,7 @@
 To work with MapmyIndia Map in flutter add this to your package's pubspec.yaml file:
 ~~~yaml
 dependencies:
-  mapmyindia_gl: ^0.2.1
+  mapmyindia_gl: ^0.2.2
 ~~~
 
 Now in your dart code you need to import this package:
@@ -153,6 +154,13 @@ Fill fill = await controller.addFill(FillOptions(geometry: latlng, fillColor: "#
 controller.removeFill(fill);
 ~~~
 
+## Add Annotations using Geojson
+**This feature is available from v0.2.2**
+```dart
+List<Symbol> symbol = await controller.addSymbolsFromJson(geojson);  
+List<Line> lines = await controller.addLinesFromJson(geojson);  
+List<Fill> fills = await controller.addFillsFromJson(geojson);
+```
 ## Show User location
 **onUserLocationUpdated is available from v0.2.0**
 
