@@ -176,6 +176,10 @@ MapmyIndiaMap(
 )
 ~~~
 
+## IMPORTANT
+
+>To read further, please refer to documentation available here: [https://github.com/mappls-api/flutter-mapmyindia-gl/wiki](https://github.com/mappls-api/flutter-mapmyindia-gl/wiki)
+
 
 ![Email](https://www.google.com/a/cpanel/mapmyindia.co.in/images/logo.gif?service=google_gsuite) 
 
