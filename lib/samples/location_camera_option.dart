@@ -30,12 +30,12 @@ class LocationCameraOptionState extends State {
   late String _selectedTrackingModeText;
   List<MyLocationTrackingMode> trackingModeList = [
     MyLocationTrackingMode.None,
-    MyLocationTrackingMode.NONE_COMPASS,
-    MyLocationTrackingMode.NONE_GPS,
+    MyLocationTrackingMode.NoneCompass,
+    MyLocationTrackingMode.NoneGPS,
     MyLocationTrackingMode.Tracking,
     MyLocationTrackingMode.TrackingCompass,
     MyLocationTrackingMode.TrackingGPS,
-    MyLocationTrackingMode.TRACKING_GPS_NORTH,
+    MyLocationTrackingMode.TrackingGPSNorth,
   ];
   List<String> trackingModeTextList = [
     "None",

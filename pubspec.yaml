@@ -27,18 +27,19 @@ dependencies:
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
-  mapmyindia_gl: ^0.2.0
+  mapmyindia_gl: ^0.3.1
   cupertino_icons: ^1.0.0
   fluttertoast: ^8.0.6
-  location: 4.0.0
-  mapmyindia_direction_plugin: ^0.1.0
+  location: ^4.0.0
+  mapmyindia_direction_plugin: ^0.2.0
   flutter_colorpicker: ^0.4.0
   supercharged: ^2.0.0
-  mapmyindia_nearby_plugin: ^0.1.0
-  mapmyindia_place_widget: ^0.1.0
+  mapmyindia_nearby_plugin: ^0.2.0
+  mapmyindia_place_widget: ^0.2.0
   path_provider: ^2.0.0
   http: ^0.13.0
   collection: ^1.0.0
+  turf: ^0.0.7
 
 dev_dependencies:
   flutter_test:
@@ -61,6 +62,7 @@ flutter:
   #   - images/a_dot_ham.jpeg
   assets:
     - assets/symbols/custom-icon.png
+    - assets/symbols/car.png
     - assets/symbols/2.0x/custom-icon.png
     - assets/symbols/3.0x/custom-icon.png
 

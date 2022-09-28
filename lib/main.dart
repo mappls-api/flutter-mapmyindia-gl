@@ -13,6 +13,7 @@ import 'package:flutter_mapmyindia_gl_app/samples/current_location_widget.dart';
 import 'package:flutter_mapmyindia_gl_app/samples/direction_ui_widget.dart';
 import 'package:flutter_mapmyindia_gl_app/samples/direction_widget.dart';
 import 'package:flutter_mapmyindia_gl_app/samples/geocode_widget.dart';
+import 'package:flutter_mapmyindia_gl_app/samples/gradient_polyline_widget.dart';
 import 'package:flutter_mapmyindia_gl_app/samples/location_camera_option.dart';
 import 'package:flutter_mapmyindia_gl_app/samples/map_click_event.dart';
 import 'package:flutter_mapmyindia_gl_app/samples/map_long_click.dart';
@@ -23,12 +24,17 @@ import 'package:flutter_mapmyindia_gl_app/samples/place_picker_widget.dart';
 import 'package:flutter_mapmyindia_gl_app/samples/place_search_widget.dart';
 import 'package:flutter_mapmyindia_gl_app/samples/poi_along_route_widget.dart';
 import 'package:flutter_mapmyindia_gl_app/samples/reverse_geocode_widget.dart';
+import 'package:flutter_mapmyindia_gl_app/samples/tracking_widget.dart';
 import 'package:flutter_mapmyindia_gl_app/utils/color.dart';
 import 'package:flutter_mapmyindia_gl_app/samples/add_polygon_widget.dart';
 import 'package:flutter_mapmyindia_gl_app/samples/autosuggest_widget.dart';
 import 'package:flutter_mapmyindia_gl_app/utils/feature_type.dart';
 import 'package:location/location.dart';
 import 'package:mapmyindia_gl/mapmyindia_gl.dart';
+
+final List<FeatureList> animationFeatures = <FeatureList>[
+  FeatureList('Tracking sample', 'To track a vehicle on map', '/Tracking')
+];
 
 final List<FeatureList> mapEvents = <FeatureList>[
   FeatureList(
@@ -50,31 +56,55 @@ final List<FeatureList> markerFeatures = <FeatureList>[
 ];
 
 final List<FeatureList> locationFeatures = <FeatureList>[
-  FeatureList('Current Location', 'Location camera options for render and tracking modes', '/CurrentLocation')
+  FeatureList(
+      'Current Location',
+      'Location camera options for render and tracking modes',
+      '/CurrentLocation')
 ];
 
 final List<FeatureList> customWidgetFeature = <FeatureList>[
-  FeatureList("Place Autocomplete Widget", "Location search functionality and UI to search a place", '/PlaecSearchUI'),
-  FeatureList("Place Picker", "Place Picker to search and choose a specific location", '/PlacePickerUI'),
-  FeatureList('Direction Widget', "MapmyIndia Direction Widget to show Route on map", '/DirectionUI'),
-  FeatureList('Nearby Widget', "MapmyIndia Nearby Widget to search nearby result on map", '/NearbyUI')
+  FeatureList(
+      "Place Autocomplete Widget",
+      "Location search functionality and UI to search a place",
+      '/PlaecSearchUI'),
+  FeatureList(
+      "Place Picker",
+      "Place Picker to search and choose a specific location",
+      '/PlacePickerUI'),
+  FeatureList('Direction Widget',
+      "MapmyIndia Direction Widget to show Route on map", '/DirectionUI'),
+  FeatureList('Nearby Widget',
+      "MapmyIndia Nearby Widget to search nearby result on map", '/NearbyUI')
 ];
 
 final List<FeatureList> polylineFeatures = <FeatureList>[
-  FeatureList('Draw Polyline', 'Draw a polyline with given list of latitude and longitude', '/AddPolyline'),
-  FeatureList('Draw Polygon', 'Draw a polygon with given list of latitude and longitude', '/AddPolygon')
+  FeatureList(
+      'Draw Polyline',
+      'Draw a polyline with given list of latitude and longitude',
+      '/AddPolyline'),
+  FeatureList(
+      'Polyline with Gradient color',
+      'Draw a polyline with given list of latitude and longitude',
+      '/GradientPolyline'),
+  FeatureList('Draw Polygon',
+      'Draw a polygon with given list of latitude and longitude', '/AddPolygon')
 ];
 
 final List<FeatureList> restApiFeatures = <FeatureList>[
   FeatureList('Autosuggest', 'Auto suggest places on the map', '/AutoSuggest'),
   FeatureList('Geocode', 'Geocode rest API call', '/Geocode'),
-  FeatureList('Reverse Geocode', 'Reverse Geocode rest API call', '/ReverseGeocode'),
+  FeatureList(
+      'Reverse Geocode', 'Reverse Geocode rest API call', '/ReverseGeocode'),
   FeatureList('Nearby', 'Show nearby results on the map', '/Nearby'),
-  FeatureList('Direction', 'Get directions between two points and show on the map', '/Direction'),
-  FeatureList('POI Along Route', 'User will be able to get the details of POIs of a particular category along his set route', '/POIAlongRoute'),
-  FeatureList('Place Detail', 'To get the place details from eLoc', '/PlaceDetail'),
+  FeatureList('Direction',
+      'Get directions between two points and show on the map', '/Direction'),
+  FeatureList(
+      'POI Along Route',
+      'User will be able to get the details of POIs of a particular category along his set route',
+      '/POIAlongRoute'),
+  FeatureList(
+      'Place Detail', 'To get the place details from eLoc', '/PlaceDetail'),
 ];
-
 
 class MapsDemo extends StatefulWidget {
   @override
@@ -90,7 +120,8 @@ void main() {
       '/MapClick': (BuildContext context) => MapClickEvent(),
       '/MapLongClick': (BuildContext context) => MapLongClick(),
       '/CameraFeature': (BuildContext context) => CameraFeature(),
-      '/LocationCameraOptions': (BuildContext context) => LocationCameraOption(),
+      '/LocationCameraOptions': (BuildContext context) =>
+          LocationCameraOption(),
       '/AddMarker': (BuildContext context) => AddMarkerWidget(),
       '/CurrentLocation': (BuildContext context) => CurrentLocationWidget(),
       '/AddPolyline': (BuildContext context) => AddPolylineWidget(),
@@ -106,6 +137,8 @@ void main() {
       '/PlaecSearchUI': (BuildContext context) => PlaceSearchWidget(),
       '/PlacePickerUI': (BuildContext context) => PlacePickerWidget(),
       '/PlaceDetail': (BuildContext context) => PlaceDetailWidget(),
+      '/GradientPolyline': (BuildContext context) => GradientPolylineWidget(),
+      '/Tracking': (BuildContext context) => TrackingWidget(),
     },
   ));
 }
@@ -146,7 +179,7 @@ class MapDemoState extends State {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar:
-        AppBar(backgroundColor: MyColor.colorPrimary, title: titleMap()),
+            AppBar(backgroundColor: MyColor.colorPrimary, title: titleMap()),
         drawer: mapDrawer(),
         body: itemList(context));
   }
@@ -159,14 +192,14 @@ class MapDemoState extends State {
           Container(
             decoration: BoxDecoration(
                 gradient: LinearGradient(
-                  colors: [
-                    MyColor.colorPrimary,
-                    MyColor.colorPrimaryDark,
-                    MyColor.colorAccent
-                  ],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                )),
+              colors: [
+                MyColor.colorPrimary,
+                MyColor.colorPrimaryDark,
+                MyColor.colorAccent
+              ],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            )),
             height: 170,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -234,6 +267,15 @@ class MapDemoState extends State {
             },
           ),
           ListTile(
+            title: Text('Animations'),
+            onTap: () => {
+              setState(() {
+                selectedFeatureType = FeatureType.ANIMATION_FEATURE;
+              }),
+              Navigator.pop(context)
+            },
+          ),
+          ListTile(
             title: Text('Custom Widgets'),
             onTap: () => {
               setState(() {
@@ -287,6 +329,11 @@ class MapDemoState extends State {
           itemCount: polylineFeatures.length,
           itemBuilder: (_, int index) =>
               itemWidget(polylineFeatures[index], context));
+    } else if (selectedFeatureType == FeatureType.ANIMATION_FEATURE) {
+      return ListView.builder(
+          itemCount: animationFeatures.length,
+          itemBuilder: (_, int index) =>
+              itemWidget(animationFeatures[index], context));
     } else {
       return ListView.builder(
           itemCount: mapEvents.length,
@@ -307,6 +354,8 @@ class MapDemoState extends State {
       return Text('Custom Widgets');
     } else if (selectedFeatureType == FeatureType.POLYLINE_FEATURE) {
       return Text('Polyline');
+    } else if (selectedFeatureType == FeatureType.ANIMATION_FEATURE) {
+      return Text('Animations');
     } else {
       return Text('Map Events');
     }
