@@ -8,7 +8,7 @@
 To work with MapmyIndia Map in flutter add this to your package's pubspec.yaml file:
 ~~~yaml
 dependencies:
-  mapmyindia_gl: ^0.2.2
+  mapmyindia_gl: ^0.3.1
 ~~~
 
 Now in your dart code you need to import this package:
