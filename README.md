@@ -21,7 +21,7 @@ import 'package:mapmyindia_gl/mapmyindia_gl.dart';
 You **must** provide your keys through the `MapmyIndiaAccountManager` class:  
   
 ~~~dart  
-MapmyIndiaAccountManager.setMapSDKKey(ACCESS_TOKEN); 
+MapmyIndiaAccountManager.setMapSDKKey(MAP_SDK_KEY); 
 MapmyIndiaAccountManager.setRestAPIKey(REST_API_KEY); 
 MapmyIndiaAccountManager.setAtlasClientId(ATLAS_CLIENT_ID); 
 MapmyIndiaAccountManager.setAtlasClientSecret(ATLAS_CLIENT_SECRET);  
